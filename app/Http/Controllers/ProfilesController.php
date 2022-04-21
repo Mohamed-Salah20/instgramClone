@@ -58,6 +58,11 @@ class ProfilesController extends Controller
 
             // $image = Image::make(public_path("{$imagePath}"))->fit(1000, 1000);
        $image = Image::make(public_path("storage/{$imagePath}"))->fit(1000, 1000);
+         // ERROR in the above code line 59 : Intervention / Image Upload Error {{ Image source not readable }}
+         // SOLUTION : php artisan storage:link
+         // REFRENCE  https://stackoverflow.com/questions/36157824/intervention-image-upload-error-image-source-not-readable
+         
+        //testing new comment
         $image->save();
             $imageArray=['image'=>$imagePath];
         }
