@@ -18,6 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    {{-- <link rel="stylesheet" href="css/style.css"> <!-- this was added by me Mo--> --}}
 </head>
 <body>
     <div id="app">
@@ -61,7 +62,13 @@
                                     {{ Auth::user()->username }}
                                 </a>
 
+
+
+
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+
+                                    <a class="dropdown-item" href="/profile/{{ Auth::user()->profile->id }}"> Profile </a>
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

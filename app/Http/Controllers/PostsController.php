@@ -7,6 +7,7 @@ use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Intervention\Image\Facades\Image;
+use App\Models\Comment;
 
 class PostsController extends Controller
 {
@@ -19,7 +20,7 @@ class PostsController extends Controller
     public function index(){
 
         $users = auth()->user()->following()->pluck('profiles.user_id');
-        // dd($users);
+        //dd(auth()->user()->following());
         $posts = Post::whereIn('user_id',$users)->orderBy('created_at','DESC')->simplePaginate(5);// or use latest() instead of orderBy , use paginate(num) instead of get()
         // dd($posts);
         return view('posts.index',compact('posts'));
@@ -32,7 +33,7 @@ class PostsController extends Controller
 
     public function store(){
         $data=request()->validate([
-            'caption'=>'required',
+            'caption'=>'required|max:100',
             'image'=>'required|image',
         ]);
         // Post::create($data); error
@@ -51,11 +52,27 @@ class PostsController extends Controller
         return redirect('/profile'.'/'. auth()->user()->id);
     }
 
+
+
+    // public function indexComments(){
+
+    //     $comments = Comment:: ;
+    // }
+
     public function show(Post $post){
         // dd($post);
-        return view('posts.show',//compact('post'));
+
+        //dd($post->id);
+
+        $comments = Comment::where('post_id',$post->id)->get();
+
+        //dd($comments);
+        return view('posts.show',//compact('post','comments'));
         [
             'post'=>$post,
+            'comments'=>$comments,
         ]);
     }
+
+
 }

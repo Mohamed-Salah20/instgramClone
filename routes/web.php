@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
@@ -22,7 +23,9 @@ use App\Models\Post;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-
+Route::get('/test', function () {
+    dd(auth()->user()->id);
+});
 
 Auth::routes();
 
@@ -38,5 +41,7 @@ Route::get('/',[PostsController::class,'index']);
 Route::get('/p/create',[PostsController::class,'create']);
 Route::post('/p',[PostsController::class,'store']);
 Route::get('/p/{post}',[PostsController::class,'show']);
+
+Route::post('/p/{post}/comment',[CommentController::class,'store']);
 
 Route::post('/follow/{user}', [FollowsController::class,'store']);

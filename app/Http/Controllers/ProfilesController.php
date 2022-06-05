@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Models\User;
 
 use Intervention\Image\Facades\Image;
 
@@ -19,8 +18,7 @@ class ProfilesController extends Controller
         $user=User::findOrFail($user);
         $follows = (auth()->user()) ? auth()->user()->following->contains($user->id) : false;
         // dd($follows);
-        return view
-        ('profiles.index',[
+        return view('profiles.index',[
 
             'user'=>$user,
             'follows'=>$follows,
@@ -46,10 +44,10 @@ class ProfilesController extends Controller
         $this->authorize('update',$user->profile);
 
         $data=$request->validate([
-            'title'=>'required',
-            'description'=>'required',
+            'title'=>'max:10',
+            'description'=>'max:100',
             'url'=>'url',
-            'image'=>'image'
+            'image'=>'image|required'
         ]);
 
         if($request->has('image')){
@@ -57,11 +55,11 @@ class ProfilesController extends Controller
             $imagePath = request('image')->store('profile','public');
 
             // $image = Image::make(public_path("{$imagePath}"))->fit(1000, 1000);
-       $image = Image::make(public_path("storage/{$imagePath}"))->fit(1000, 1000);
+           $image = Image::make(public_path("storage/{$imagePath}"))->fit(1000, 1000);
          // ERROR in the above code line 59 : Intervention / Image Upload Error {{ Image source not readable }}
          // SOLUTION : php artisan storage:link
          // REFRENCE  https://stackoverflow.com/questions/36157824/intervention-image-upload-error-image-source-not-readable
-         
+
         //testing new comment
         $image->save();
             $imageArray=['image'=>$imagePath];
